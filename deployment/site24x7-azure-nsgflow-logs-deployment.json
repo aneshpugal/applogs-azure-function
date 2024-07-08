@@ -136,6 +136,10 @@
                         {
                             "name": "LogCollectionStartTime",
                             "value": "[parameters('LogCollectionStartTime')]"
+                        },
+                        {
+                            "name": "Project",
+                            "value": "NsgFlow_Logs/"
                         }
                     ],
                     "linuxFxVersion": "[variables('linuxFxVersion')]",

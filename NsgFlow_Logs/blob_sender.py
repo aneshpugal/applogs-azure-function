@@ -180,14 +180,24 @@ def send_logs_to_s247(gzipped_parsed_lines, log_size):
     else:
         logging.info('%s :Problem in uploading to site24x7 status %s, Reason : %s', dict_responseHeaders['x-uploadid'], s247_response.status, s247_response.read())
 
-def processData(logRecords,service):
+def processData(logRecords,service=None,containerName):
     try:
-        logRecords = b'[' + logRecords + b']'
-        logRecords = json.loads(logRecords.decode('utf-8'))
+        if service !=None:
+            logRecords = b'[' + logRecords + b']'
+            logRecords = json.loads(logRecords.decode('utf-8'))
+        else:
+            logRecords = logRecords.splitlines()
+            service = containerName
         global logtype_config, s247_datetime_format_string,masking_config, hashing_config, derived_eval, derived_fields, ignored_fields, log_size,serviceName
         serviceName = service
-        logtype_config = json.loads(b64decode(os.environ['logTypeConfig']).decode('utf-8'))
-        s247_datetime_format_string = logtype_config['dateFormat']
+        log_category = 'S247_'+ service
+        if log_category in os.environ:
+            print("log_category found in input arguments")
+            logtype_config = json.loads(b64decode(os.environ[log_category]).decode('utf-8'))
+            s247_datetime_format_string = logtype_config['dateFormat']
+        else:
+            logtype_config = json.loads(b64decode(os.environ['logTypeConfig']).decode('utf-8'))
+        s247_datetime_format_string = logtype_config['dateFormat']  
         masking_config = logtype_config['maskingConfig'] if 'maskingConfig' in logtype_config else None
         hashing_config = logtype_config['hashingConfig'] if 'hashingConfig' in logtype_config else None
         derived_eval = logtype_config['derivedConfig'] if 'derivedConfig' in logtype_config else None
