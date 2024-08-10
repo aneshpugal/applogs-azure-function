@@ -2,7 +2,7 @@ import logging,os
 import azure.functions as func
 from azure.storage.blob import BlobServiceClient
 from azure.data.tables import TableServiceClient
-from NsgFlow_Logs import blob_details,check_point,blob_sender
+from Blob_Logs import blob_details,check_point,blob_sender
 from datetime import datetime
 import ast
 
@@ -58,8 +58,8 @@ def main(myblob: func.InputStream):
         
         if blob_content and blob_content[0] == 0x2C:
             blob_content = blob_content[1:]
-        blob_sender.processData(blob_content,serviceName,container_name)
-        checkpoint['check_pointIndex'] = (len(block_list[0])-1)
+        blob_sender.processData(blob_content,container_name,serviceName)
+        if tail:checkpoint['check_pointIndex'] = (len(block_list[0])-1)
         check_pointDB.put_check_point(checkpoint)
         return
     except Exception as e:

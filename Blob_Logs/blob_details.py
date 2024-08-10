@@ -1,7 +1,7 @@
 import re
 
 class BlobDetails:
-    def __init__(self, blob_path):
+    def __init__(self, blob_path,container_name):
         if blob_path:
             pattern = re.compile(r".*SUBSCRIPTIONS/(?P<subId>[^/]+)/RESOURCEGROUPS/(?P<resourceGroup>[^/]+)/PROVIDERS/(?P<resourceNamespace>[^/]+)/(?P<serviceGroup>[^/]+)/(?P<serviceName>[^/]+)/y=(?P<blobYear>[^/]+)/m=(?P<blobMonth>[^/]+)/d=(?P<blobDay>[^/]+)/h=(?P<blobHour>[^/]+)/m=(?P<blobMinute>[^/]+)(?:/macAddress=(?P<mac>[^/]+))?.*")
             match = pattern.match(blob_path)
@@ -18,12 +18,13 @@ class BlobDetails:
                 self.minute = match.group("blobMinute")
                 if match.group("mac"):
                     self.mac = match.group("mac")
+            self.container_name = container_name
 
     def get_partition_key(self):
         if self.mac:
             return f"{self.subscription_id.replace('-', '_')}_{self.resource_group}_{self.service_name}_{self.mac}"
         else:
-            return f"{self.subscription_id.replace('-', '_')}_{self.resource_group}_{self.service_name}"
+            return f"{self.subscription_id.replace('-', '_')}_{self.resource_group}_{self.container_name}"
     def get_row_key(self):
         return f"{self.year}_{self.month}_{self.day}_{self.hour}_{self.minute}"
 

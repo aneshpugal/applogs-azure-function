@@ -1,6 +1,6 @@
 import sys, os, re, gzip, json, urllib.parse, urllib.request, traceback, datetime, calendar, logging, hashlib, ast
 from base64 import b64decode
-from NsgFlow_Logs import nsg_parser
+from Blob_Logs import nsg_parser
 logtype_config = None
 s247_datetime_format_string = None
 serviceName = ""
@@ -164,7 +164,7 @@ def log_line_filter(formatted_line):
         remove_ignored_fields()
     formatted_line['_zl_timestamp'] = get_timestamp(formatted_line[logtype_config['dateField']])
     formatted_line['s247agentuid'] = serviceName
-    log_size = log_size_calculation(formatted_line)
+    log_size = log_size_calculation(formatted_line) 
     return formatted_line,log_size
 
 def send_logs_to_s247(gzipped_parsed_lines, log_size):
@@ -180,7 +180,7 @@ def send_logs_to_s247(gzipped_parsed_lines, log_size):
     else:
         logging.info('%s :Problem in uploading to site24x7 status %s, Reason : %s', dict_responseHeaders['x-uploadid'], s247_response.status, s247_response.read())
 
-def processData(logRecords,service=None,containerName):
+def processData(logRecords,containerName,service=None):
     try:
         if service !=None:
             logRecords = b'[' + logRecords + b']'
