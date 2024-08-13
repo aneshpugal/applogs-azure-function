@@ -9,7 +9,7 @@ class BlobDetails:
                 self.subscription_id = match.group("subId")
                 self.resource_group = match.group("resourceGroup")
                 self.resource_namespace = match.group("resourceNamespace")
-                self.service_roup = match.group("serviceGroup")
+                self.service_group = match.group("serviceGroup")
                 self.service_name = match.group("serviceName")
                 self.year = match.group("blobYear")
                 self.month = match.group("blobMonth")

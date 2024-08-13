@@ -35,7 +35,7 @@ def main(myblob: func.InputStream):
         azure_logger.setLevel(logging.WARNING)
         if tail:
             blobDetails = blob_details.blob_details(str(myblob.name))
-            serviceName = blobDetails.service_name
+            serviceName = blobDetails.service_group
         
             check_pointDB = check_point.check_point(table_connection_string)
             checkpoint = check_pointDB.get_check_point(blobDetails)
@@ -59,8 +59,9 @@ def main(myblob: func.InputStream):
         if blob_content and blob_content[0] == 0x2C:
             blob_content = blob_content[1:]
         blob_sender.processData(blob_content,container_name,serviceName)
-        if tail:checkpoint['check_pointIndex'] = (len(block_list[0])-1)
-        check_pointDB.put_check_point(checkpoint)
+        if tail:
+            checkpoint['check_pointIndex'] = (len(block_list[0])-1)
+            check_pointDB.put_check_point(checkpoint)
         return
     except Exception as e:
         print(str(e))

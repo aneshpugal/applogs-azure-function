@@ -43,6 +43,8 @@ def json_log_parser(lines_read):
             if serviceName == "NETWORKSECURITYGROUPS":
                 lines,size= nsg_parser.processData(event_obj,log_line_filter)
             else:
+                if type(event_obj) == bytes:
+                    event_obj = ast.literal_eval(event_obj.decode())
                 for path_obj in logtype_config['jsonPath']:
                     value = get_json_value(event_obj, path_obj['key' if 'key' in path_obj else 'name'], path_obj['type'] if 'type' in path_obj else None)
                     if value:
@@ -58,6 +60,8 @@ def json_log_parser(lines_read):
 
 def get_timestamp(datetime_string):
     try:
+        if len(datetime_string) > 26:
+            datetime_string = datetime_string[:26] + 'Z'
         datetime_data = datetime.datetime.strptime(datetime_string, s247_datetime_format_string)
         timestamp = calendar.timegm(datetime_data.utctimetuple()) *1000 + int(datetime_data.microsecond/1000)
         return int(timestamp)
