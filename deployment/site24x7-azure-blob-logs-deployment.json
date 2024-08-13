@@ -43,6 +43,7 @@
     "resources": [
 	    {
             "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2020-06-01",
             "name": "[variables('serverFarmName')]",
             "location": "[variables('location')]",
             "sku": {
@@ -63,6 +64,7 @@
             }
         },
 		{
+            "apiVersion": "2019-06-01",
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[ variables('funcStorageName')]",
             "location": "[variables('location')]",
@@ -85,6 +87,7 @@
             }
         },
         {
+            "apiVersion": "2020-06-01",
             "name": "[variables('functionName')]",
             "type": "Microsoft.Web/sites",
             "kind": "functionapp,linux",
@@ -116,7 +119,7 @@
                         },
                         {
                             "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcStorageName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funcStorageName'))).keys[0].value)]"
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcStorageName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funcStorageName')),'2019-06-01').keys[0].value)]"
                         },                         
                         {
                             "name": "FUNCTION_APP_EDIT_MODE",
@@ -124,7 +127,7 @@
                         },
                         {
                             "name": "AzureWebJobsStorage",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcStorageName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts',  variables('funcStorageName'))').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcStorageName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts',  variables('funcStorageName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
                         },
                         {
                             "name": "blobconnectionstring",
@@ -145,6 +148,7 @@
             },
             "resources": [
                 {
+                    "apiVersion": "2020-06-01",
                     "name": "web",
                     "type": "sourcecontrols",
                     "dependsOn": [
