@@ -139,7 +139,7 @@
                         },
                         {
                             "name": "Project",
-                            "value": "NsgFlow_Logs/"
+                            "value": "Blob_Logs/"
                         }
                     ],
                     "linuxFxVersion": "[variables('linuxFxVersion')]",
