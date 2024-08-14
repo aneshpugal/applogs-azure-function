@@ -6,7 +6,7 @@
       "type": "blobTrigger",
       "name": "myblob",
       "direction": "in",
-      "path": "%containerName%/",
+      "path": "insights-logs-networksecuritygroupflowevent/resourceId=/SUBSCRIPTIONS/{subId}/RESOURCEGROUPS/{resourceGroup}/PROVIDERS/MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/{nsgName}/y={blobYear}/m={blobMonth}/d={blobDay}/h={blobHour}/m={blobMinute}/macAddress={mac}/PT1H.json",
       "connection": "blobconnectionstring"
     }
   ]
