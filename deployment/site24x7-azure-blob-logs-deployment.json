@@ -34,7 +34,7 @@
         "location" :  "[resourceGroup().location]",
         "linuxFxVersion" : "PYTHON|3.11",
 	    "funcStorageName": "[tolower(concat(substring(parameters('name'), 0, min(length(parameters('name')),16)), 'stg', variables('suffix')))]",
-        "functionName" : "['-Function-', variables('suffix'))]",
+        "functionName" : "[concat('-Function-', variables('suffix'))]",
         "serverFarmName" : "[concat(parameters('name'), '-AppServicePlan-', variables('suffix'))]",
         "RepoURL": "https://github.com/aneshpugal/applogs-azure-function.git",
         "Branch": "master",
