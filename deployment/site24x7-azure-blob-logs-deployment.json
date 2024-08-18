@@ -136,10 +136,6 @@
                         {
                             "name": "LogCollectionStartTime",
                             "value": "[parameters('LogCollectionStartTime')]"
-                        },
-                        {
-                            "name": "Project",
-                            "value": "Blob_Logs"
                         }
                     ],
                     "linuxFxVersion": "[variables('linuxFxVersion')]",
