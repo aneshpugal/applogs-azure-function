@@ -136,7 +136,20 @@
                         {
                             "name": "LogCollectionStartTime",
                             "value": "[parameters('LogCollectionStartTime')]"
+                        },
+                        {
+                            "name": "DISABLE_RECURSIVE_LOOKUP",
+                            "value": "false"
+                        },
+                        {
+                            "name": "CUSTOM_REQUIREMENTSTXT_PATH",
+                            "value": "Blob_Logs/Block_Blob_Logs/requirements.txt"
+                        },
+                        {
+                            "name": "DISABLE_DOTNETCORE_BUILD",
+                            "value": "true"
                         }
+
                     ],
                     "linuxFxVersion": "[variables('linuxFxVersion')]",
                     "alwaysOn": true
