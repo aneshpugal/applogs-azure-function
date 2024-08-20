@@ -98,15 +98,6 @@
                 "[resourceId('Microsoft.Storage/storageAccounts/',  variables('funcStorageName'))]"                
             ],
             "properties": {
-                "platform": {
-                    "python": {
-                    "version": "3.11"
-                    }
-                },
-                "oryxBuild": {
-                    "platform": "python",
-                    "platformVersion": "3.11"
-                },
                 "name": "[variables('functionName')]",
                 "enabled": true,
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverFarmName'))]",
@@ -117,6 +108,10 @@
                         {
                             "name": "FUNCTIONS_WORKER_RUNTIME", 
                             "value": "python"
+                        },
+                        {
+                            "name": "WEBSITE_RUN_FROM_PACKAGE",
+                            "value": "1"
                         },
                         {
                             "name": "FUNCTIONS_EXTENSION_VERSION", 
