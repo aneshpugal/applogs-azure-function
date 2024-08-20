@@ -110,10 +110,6 @@
                             "value": "python"
                         },
                         {
-                            "name": "WEBSITE_RUN_FROM_PACKAGE",
-                            "value": "1"
-                        },
-                        {
                             "name": "FUNCTIONS_EXTENSION_VERSION", 
                             "value": "~4"
                         },
@@ -135,7 +131,7 @@
                         },
                         {
                             "name": "Project",
-                            "value": "target/Blob_Logs/src/"
+                            "value": "Blob_Logs/Block_Blob_Logs/"
                         },
                         {
                             "name": "LogCollectionStartTime",
