@@ -98,6 +98,15 @@
                 "[resourceId('Microsoft.Storage/storageAccounts/',  variables('funcStorageName'))]"                
             ],
             "properties": {
+                "platform": {
+                    "python": {
+                    "version": "3.11"
+                    }
+                },
+                "oryxBuild": {
+                    "platform": "python",
+                    "platformVersion": "3.11"
+                },
                 "name": "[variables('functionName')]",
                 "enabled": true,
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverFarmName'))]",
