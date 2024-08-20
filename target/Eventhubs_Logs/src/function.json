@@ -1,0 +1,15 @@
+{
+ "scriptFile": "log_sender.py",
+ "bindings": [
+   {
+     "type": "eventHubTrigger",
+     "name": "eventMessages",
+     "direction": "in",
+     "path" : "site24x7-operational-logs",
+     "eventHubName": "site24x7-operational-logs",
+     "connection": "AzureEventHubConnectionString",
+     "cardinality": "many",
+     "consumerGroup": "$Default"
+   }
+ ]
+}
