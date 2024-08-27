@@ -12,6 +12,6 @@
     "id": "Microsoft.Azure.Functions.ExtensionBundle",
     "version": "[3.*, 4.0.0)"
   },
-  "functions": ["Block_Blob_Logs"],
+  "functions": ["Blob_Logs"],
   "functionTimeout": "00:05:00"
 }

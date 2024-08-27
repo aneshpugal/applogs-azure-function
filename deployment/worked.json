@@ -13,35 +13,34 @@
             }
         },
         "logTypeConfig": {
-            "type": "string",
-            "defaultValue": "Enter the logTypeConfig value",
+            "defaultValue": "",
+            "type": "String",
             "metadata": {
                 "description": "Enter the logTypeConfig value copied from Site24x7 Log profile page"
             }
         },
         "LogCollectionStartTime": {
-            "type": "int",
             "defaultValue": "[dateTimeToEpoch(utcNow())]",
+            "type": "Int",
             "metadata": {
-                "description" : "Enter the epoch time from which you wish to collect logs from"
+                "description": "Enter the epoch time from which you wish to collect logs from"
             }
         }
     },
-    
     "variables": {
-	    "suffix": "[substring(toLower(uniqueString(resourceGroup().id, resourceGroup().location)),0,5)]",
-	    "subscriptionid": "[subscription().subscriptionId]",
-        "location" :  "[resourceGroup().location]",
-        "linuxFxVersion" : "PYTHON|3.11",
-	    "funcStorageName": "[tolower(concat(substring(parameters('name'), 0, min(length(parameters('name')),16)), 'stg', variables('suffix')))]",
-        "functionName" : "[concat('Function-', variables('suffix'))]",
-        "serverFarmName" : "[concat(parameters('name'), '-AppServicePlan-', variables('suffix'))]",
-        "RepoURL": "https://github.com/aneshpugal/applogs-azure-function.git",
-        "Branch": "master",
-        "RootManageSharedAccessKey_name" : "RootManageSharedAccessKey"
-     },
+        "suffix": "[substring(toLower(uniqueString(resourceGroup().id, resourceGroup().location)),0,5)]",
+        "subscriptionid": "[subscription().subscriptionId]",
+        "location": "[resourceGroup().location]",
+        "linuxFxVersion": "PYTHON|3.11",
+        "funcStorageName": "[tolower(concat(substring(parameters('name'), 0, min(length(parameters('name')),16)), 'stg', variables('suffix')))]",
+        "functionName": "[concat(parameters('name'), '-Function-', variables('suffix'))]",
+        "serverFarmName": "[concat(parameters('name'), '-AppServicePlan-', variables('suffix'))]",
+        "RepoURL": "https://github.com/aneshpugal/nsgssimple.git",
+        "Branch": "main",
+        "RootManageSharedAccessKey_name": "RootManageSharedAccessKey"
+    },
     "resources": [
-	    {
+        {
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2020-06-01",
             "name": "[variables('serverFarmName')]",
@@ -63,9 +62,9 @@
                 "targetWorkerSizeId": 0
             }
         },
-		{
-            "apiVersion": "2019-06-01",
+        {
             "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
             "name": "[ variables('funcStorageName')]",
             "location": "[variables('location')]",
             "sku": {
@@ -73,7 +72,7 @@
             },
             "properties": {
                 "supportsHttpsTrafficOnly": false,
-		        "encryption": {
+                "encryption": {
                     "services": {
                         "file": {
                             "enabled": true
@@ -87,16 +86,16 @@
             }
         },
         {
+            "type": "Microsoft.Web/sites",
             "apiVersion": "2020-06-01",
             "name": "[variables('functionName')]",
-            "type": "Microsoft.Web/sites",
-            "kind": "functionapp,linux",
             "location": "[variables('location')]",
-            "tags": {},
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms', variables('serverFarmName'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts/',  variables('funcStorageName'))]"                
+                "[resourceId('Microsoft.Storage/storageAccounts/',  variables('funcStorageName'))]"
             ],
+            "tags": {},
+            "kind": "functionapp,linux",
             "properties": {
                 "name": "[variables('functionName')]",
                 "enabled": true,
@@ -106,21 +105,21 @@
                 "siteConfig": {
                     "appSettings": [
                         {
-                            "name": "FUNCTIONS_WORKER_RUNTIME", 
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
                             "value": "python"
                         },
                         {
-                            "name": "FUNCTIONS_EXTENSION_VERSION", 
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
                             "value": "~4"
                         },
-			            {
-                            "name": "logTypeConfig", 
+                        {
+                            "name": "logTypeConfig",
                             "value": "[parameters('logTypeConfig')]"
                         },
                         {
                             "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
                             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcStorageName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funcStorageName')),'2019-06-01').keys[0].value)]"
-                        },                        
+                        },
                         {
                             "name": "FUNCTION_APP_EDIT_MODE",
                             "value": "readwrite"
@@ -134,26 +133,9 @@
                             "value": "[parameters('blobconnectionstring')]"
                         },
                         {
-                            "name": "Project",
-                            "value": "Blob_Logs/"
-                        },
-                        {
                             "name": "LogCollectionStartTime",
                             "value": "[parameters('LogCollectionStartTime')]"
-                        },
-                        {
-                            "name": "DISABLE_RECURSIVE_LOOKUP",
-                            "value": "false"
-                        },
-                        {
-                            "name": "DISABLE_DOTNETCORE_BUILD",
-                            "value": "true"
-                        },
-                        {
-                            "name": "CUSTOM_REQUIREMENTSTXT_PATH",
-                            "value": "Blob_Logs/requirements.txt"
                         }
-
                     ],
                     "linuxFxVersion": "[variables('linuxFxVersion')]",
                     "alwaysOn": true
@@ -161,11 +143,11 @@
             },
             "resources": [
                 {
+                    "type": "sourcecontrols",
                     "apiVersion": "2020-06-01",
                     "name": "web",
-                    "type": "sourcecontrols",
                     "dependsOn": [
-                      "[resourceId('Microsoft.Web/sites/', variables('functionName'))]"
+                        "[resourceId('Microsoft.Web/sites/', variables('functionName'))]"
                     ],
                     "properties": {
                         "RepoUrl": "[variables('RepoURL')]",
@@ -173,8 +155,8 @@
                         "publishRunbook": true,
                         "IsManualIntegration": true
                     }
-               }
+                }
             ]
         }
-	]
+    ]
 }
