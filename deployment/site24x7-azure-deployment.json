@@ -119,10 +119,6 @@
                         {
 			    "name": "AzureEventHubConnectionString", 
                             "value" : "[listkeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('namespaces'), variables('RootManageSharedAccessKey_name')), '2017-04-01').primaryConnectionString]"
-                        },
-                        {
-                            "name": "Project",
-                            "value": "EventHubs_Logs/"
                         }
                     ],
                     "linuxFxVersion": "[variables('linuxFxVersion')]",
