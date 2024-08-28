@@ -134,26 +134,9 @@
                             "value": "[parameters('blobconnectionstring')]"
                         },
                         {
-                            "name": "Project",
-                            "value": "Blob_Logs/"
-                        },
-                        {
                             "name": "LogCollectionStartTime",
                             "value": "[parameters('LogCollectionStartTime')]"
-                        },
-                        {
-                            "name": "DISABLE_RECURSIVE_LOOKUP",
-                            "value": "false"
-                        },
-                        {
-                            "name": "DISABLE_DOTNETCORE_BUILD",
-                            "value": "true"
-                        },
-                        {
-                            "name": "CUSTOM_REQUIREMENTSTXT_PATH",
-                            "value": "Blob_Logs/requirements.txt"
                         }
-
                     ],
                     "linuxFxVersion": "[variables('linuxFxVersion')]",
                     "alwaysOn": true
