@@ -4,10 +4,10 @@
     "parameters": {
         "name": {
             "defaultValue": "Site24x7AzureNSGLogs",
-            "type": "String"
+            "type": "string"
         },
         "blobconnectionstring": {
-            "type": "SecureString",
+            "type": "securestring",
             "metadata": {
                 "description": "Enter the connection string from which you wish to collect logs from."
             }
@@ -25,6 +25,13 @@
             "metadata": {
                 "description" : "Enter the epoch time from which you wish to collect logs from"
             }
+        },
+        "Tail":{
+            "defaultValue": "True",
+            "metadata": {
+                "description" : "For other than block blobs input False"
+            },
+            "type": "string"
         }
     },
     
@@ -136,7 +143,12 @@
                         {
                             "name": "LogCollectionStartTime",
                             "value": "[parameters('LogCollectionStartTime')]"
+                        },
+                        {
+                            "name": "Tail",
+                            "value": "[parameters('Tail')]"
                         }
+                        
                     ],
                     "linuxFxVersion": "[variables('linuxFxVersion')]",
                     "alwaysOn": true

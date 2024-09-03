@@ -16,12 +16,12 @@ class BlobDetails:
                 self.day = match.group("blobDay")
                 self.hour = match.group("blobHour")
                 self.minute = match.group("blobMinute")
-                if match.group("mac"):
+                if match.group("mac") != None:
                     self.mac = match.group("mac")
             self.container_name = container_name
 
     def get_partition_key(self):
-        if self.mac:
+        if hasattr(self,"mac"):
             return f"{self.subscription_id.replace('-', '_')}_{self.resource_group}_{self.service_name}_{self.mac}"
         else:
             return f"{self.subscription_id.replace('-', '_')}_{self.resource_group}_{self.container_name}"
