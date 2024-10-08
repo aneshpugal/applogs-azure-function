@@ -20,7 +20,7 @@ initialized = False
 if not initialized:
     logging.info("Initialized called" + str(table_connection_string))
     with TableServiceClient.from_connection_string(table_connection_string) as table_service_client:
-        table_service_client.create_table_if_not_exists(table_name="check_points")
+        table_service_client.create_table_if_not_exists(table_name="Checkpoints")
     initialized = True
 
 # try:
