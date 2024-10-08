@@ -23,16 +23,14 @@ if not initialized:
         table_service_client.create_table_if_not_exists(table_name="check_points")
     initialized = True
 
-try:
-    logging.info("Going to initialize app")
+# try:
+#     logging.info("Going to initialize app")
     
-except Exception as e:
-    print(str(e))
+# except Exception as e:
+#     print(str(e))
 
 def main(myblob: func.InputStream):
     try:
-        if not initialized:
-            initialize_app()
         logging.info(f"Python blob trigger function processed blob Name: {myblob.name}")
         current_time_str = myblob.blob_properties["LastModified"]
         current_time = datetime.fromisoformat(current_time_str).timestamp()
