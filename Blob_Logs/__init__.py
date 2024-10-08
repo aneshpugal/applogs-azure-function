@@ -7,19 +7,21 @@ from datetime import datetime
 import ast
 
 blob_connection_string = os.environ["blobconnectionstring"]
+logging.info("Blob connetion string")
 table_connection_string = os.environ["AzureWebJobsStorage"]
 timestamp = os.environ["LogCollectionStartTime"]
 tail = ast.literal_eval(os.environ["Tail"])
+
+# def initialize_app():
+#     logging.info("Initialized called")
+global initialized
 initialized = False
 
-def initialize_app():
-    logging.info("Initialized called")
-    global initialized
-    if not initialized:
-        logging.info("Initialized called")
-        with TableServiceClient.from_connection_string(table_connection_string) as table_service_client:
-            table_service_client.create_table_if_not_exists(table_name="check_points")
-        initialized = True
+if not initialized:
+    logging.info("Initialized called" + str(table_connection_string))
+    with TableServiceClient.from_connection_string(table_connection_string) as table_service_client:
+        table_service_client.create_table_if_not_exists(table_name="check_points")
+    initialized = True
 
 try:
     logging.info("Going to initialize app")
