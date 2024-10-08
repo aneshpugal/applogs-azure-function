@@ -32,7 +32,7 @@ if not initialized:
 def main(myblob: func.InputStream):
     try:
         logging.info(f"Python blob trigger function processed blob Name: {myblob.name}")
-        logging.info("tail value : "+ tail)
+        logging.info("tail value : " + str(tail))
         current_time_str = myblob.blob_properties["LastModified"]
         current_time = datetime.fromisoformat(current_time_str).timestamp()
         if int(current_time) < int(timestamp):
