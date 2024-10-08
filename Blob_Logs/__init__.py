@@ -32,13 +32,16 @@ if not initialized:
 def main(myblob: func.InputStream):
     try:
         logging.info(f"Python blob trigger function processed blob Name: {myblob.name}")
+        logging.info("tail value : "+ tail)
         current_time_str = myblob.blob_properties["LastModified"]
         current_time = datetime.fromisoformat(current_time_str).timestamp()
         if int(current_time) < int(timestamp):
+            logging.info("Not returned")
             return
         azure_logger = logging.getLogger("azure.core.pipeline.policies.http_logging_policy")
         azure_logger.setLevel(logging.WARNING)
         if tail:
+            logging.info("Tail func")
             blobDetails = blob_details.blob_details(str(myblob.name))
             serviceName = blobDetails.service_group
             check_pointDB = check_point.check_point(table_connection_string)
@@ -51,6 +54,7 @@ def main(myblob: func.InputStream):
         block_list = blob_client.get_block_list()
         
         if tail:
+            logging.info("Tail func called")
             starting_byte = sum(item['size'] for index, item in enumerate(block_list[0]) if index < checkpoint['check_pointIndex'])
             ending_byte = sum(item['size'] for index, item in enumerate(block_list[0]) if index < len(block_list[0]) - 1)
             data_length = ending_byte - starting_byte
@@ -63,6 +67,7 @@ def main(myblob: func.InputStream):
             blob_content = blob_data.readall()
             if blob_content and blob_content[0] == 0x2C:
                 blob_content = blob_content[1:]
+            logging.info("called for processing")
             blob_sender.processData(blob_content,container_name,serviceName)
             if tail:
                 checkpoint['check_pointIndex'] = (len(block_list[0])-1)
