@@ -40,15 +40,14 @@ def main(myblob: func.InputStream):
             return
         azure_logger = logging.getLogger("azure.core.pipeline.policies.http_logging_policy")
         azure_logger.setLevel(logging.WARNING)
+        container_name, blob_name = myblob.name.split('/', 1)
         if tail:
             logging.info("Tail func")
-            blobDetails = blob_details.BlobDetails(str(myblob.name))
+            blobDetails = blob_details.BlobDetails(str(myblob.name),container_name)
             serviceName = blobDetails.service_group
             check_pointDB = check_point.check_point(table_connection_string)
             checkpoint = check_pointDB.get_check_point(blobDetails)
         
-        container_name, blob_name = myblob.name.split('/', 1)
-
         blob_service_client = BlobServiceClient.from_connection_string(blob_connection_string)
         blob_client = blob_service_client.get_blob_client(container=container_name,blob=blob_name)
         block_list = blob_client.get_block_list()
